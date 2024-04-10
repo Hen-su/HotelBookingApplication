@@ -1,0 +1,27 @@
+﻿@model RoomTypeListViewModel
+
+
+<h1>Available Rooms</h1>
+@foreach (var roomType in Model.RoomTypes)
+{
+    <div class="col">
+        <div class="card roomType-card">
+            <img alt=@roomType.RoomTypeName />
+            <div class="card-body roomType-button">
+                <h4 class="d-grid">
+
+                </h4>
+                <div class="d-flex justify-content-between mt-2">
+                    <h2 class="text-start">
+                        <a class="roomType-link">
+                            @roomType.RoomTypeName
+                        </a>
+                    </h2>
+                    <h5 class="text-nowrap">
+                        @roomType.RoomRate.ToString("c")
+                    </h5>
+                </div>
+            </div>
+        </div>
+    </div>
+}
