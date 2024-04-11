@@ -1,0 +1,16 @@
+﻿@model RoomType
+
+<h2 class="my-5">
+    @Model.RoomTypeName
+</h2>
+
+<div class="row gx-5 mb-5">
+    <div class="col-3">
+        <img src="@Model.ImageThumbnail" alt=@Model.RoomTypeName />
+    </div>
+    <div class="col-7">
+        <p>@Model.RoomTypeDescription</p>
+        <h3>@Model.RoomRate.ToString("c") per night</h3>
+        <button class="my-4">Check Availability</button>
+    </div>
+</div>

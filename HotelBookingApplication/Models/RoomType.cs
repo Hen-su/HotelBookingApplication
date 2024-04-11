@@ -7,6 +7,7 @@
         public string RoomTypeDescription { get; set; }
         public int Occupancy { get; set; }
         public decimal RoomRate { get; set; }
+        public string ImageThumbnail {  get; set; }
         public List<Room> Rooms { get; set; }
     }
 }

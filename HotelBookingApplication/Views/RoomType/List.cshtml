@@ -1,19 +1,18 @@
 ﻿@model RoomTypeListViewModel
 
-
-<h1>Available Rooms</h1>
+<h1 class="my-xl-5">Rooms</h1>
+<div class="row">
 @foreach (var roomType in Model.RoomTypes)
 {
-    <div class="col">
+    <div class="col-md-4">
         <div class="card roomType-card">
-            <img alt=@roomType.RoomTypeName />
+            <img src=@roomType.ImageThumbnail class="card-img w-auto" alt=@roomType.RoomTypeName />
             <div class="card-body roomType-button">
                 <h4 class="d-grid">
-
                 </h4>
                 <div class="d-flex justify-content-between mt-2">
                     <h2 class="text-start">
-                        <a class="roomType-link">
+                        <a class="roomType-link" asp-controller="RoomType" asp-action="Details" asp-route-id="@roomType.RoomTypeId">
                             @roomType.RoomTypeName
                         </a>
                     </h2>
@@ -25,3 +24,4 @@
         </div>
     </div>
 }
+</div>

@@ -19,5 +19,7 @@ namespace HotelBookingApplication.Controllers
         {
             return View(_roomRepository.AllRooms);
         }
+
+
     }
 }
