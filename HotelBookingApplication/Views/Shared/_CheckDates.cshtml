@@ -1,0 +1,15 @@
+﻿<form class="card p-md-4" method="post" asp-controller="Reservation" asp-action="CheckDates">
+    <div class="form-group d-flex row">
+        <div class="col">
+            <label class="mx-auto" for="checkInDate">Check In:</label>
+            <input type="date" class="form-control" id="checkInDate" name="CheckInDate" />
+        </div>
+        <div class="col-1"></div>
+        <div class="col">
+            <label class="text-center" for="checkOutDate">Check Out:</label>
+            <input type="date" class="form-control" id="checkOutDate" name="CheckOutDate" />
+        </div>
+        
+    </div>
+    <button class="mt-4" type="submit">Check Availability</button>
+</form>
