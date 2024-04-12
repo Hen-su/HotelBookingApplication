@@ -12,4 +12,21 @@
         
     </div>
     <button class="mt-4" type="submit">Check Availability</button>
+    <!--    <h3 id="heading"></h3>    -->
 </form>
+
+<script>
+    let date = new Date();
+    let today = date.toLocaleDateString("en-NZ");
+    let date2 = new Date();
+    date2.setDate(date2.getDate() + 1)
+    let tomorrow = date2.toLocaleDateString("en-NZ");
+    //document.getElementById("heading").textContent = formatDate(tomorrow);
+    document.getElementById("checkInDate").min = formatDate(today);
+    document.getElementById("checkOutDate").min = formatDate(tomorrow);
+
+    function formatDate(unFormatted) {
+        let components = unFormatted.split("/");
+        return components.reverse().join("-");
+    }
+</script>
