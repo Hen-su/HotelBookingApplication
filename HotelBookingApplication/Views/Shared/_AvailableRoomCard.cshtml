@@ -1,0 +1,30 @@
+﻿@model IEnumerable<RoomType>
+
+<h1 class="my-xl-5">Rooms</h1>
+    @foreach (var roomType in Model)
+    {
+            <div class="card roomType-card">
+                <div class="row no-gutters">
+                    <div class="col-md-12">
+                        <img src=@roomType.ImageThumbnail class="card-img w-auto" alt=@roomType.RoomTypeName />
+                    </div>
+                    <div class="col-md-8">
+                        <div class="card-body roomType-button">
+                            <h4 class="d-grid">
+                            </h4>
+                            <div class="d-flex justify-content-between mt-2">
+                                <h2 class="text-start">
+                                    <a class="roomType-link" asp-controller="RoomType" asp-action="Details" asp-route-id="@roomType.RoomTypeId">
+                                        @roomType.RoomTypeName
+                                    </a>
+                                </h2>
+                                <h5 class="text-nowrap">
+                                    @roomType.RoomRate.ToString("c")
+                                </h5>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+    }
+

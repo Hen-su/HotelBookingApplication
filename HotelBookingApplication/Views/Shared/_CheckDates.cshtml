@@ -1,18 +1,18 @@
-﻿<form class="card p-md-4" method="post" asp-controller="Reservation" asp-action="CheckDates">
+﻿<form class="card p-md-4" method="post" asp-controller="Reservation" asp-action="Availability">
     <div class="form-group d-flex row">
         <div class="col">
             <label class="mx-auto" for="checkInDate">Check In:</label>
-            <input type="date" class="form-control" id="checkInDate" name="CheckInDate" />
+            <input type="date" class="form-control" id="checkInDate" name="CheckInDate" value="@ViewBag.CheckIn" />
         </div>
         <div class="col-1"></div>
         <div class="col">
             <label class="text-center" for="checkOutDate">Check Out:</label>
-            <input type="date" class="form-control" id="checkOutDate" name="CheckOutDate" />
+            <input type="date" class="form-control" id="checkOutDate" name="CheckOutDate" value="@ViewBag.CheckOut" />
         </div>
         
     </div>
     <button class="mt-4" type="submit">Check Availability</button>
-    <!--    <h3 id="heading"></h3>    -->
+    <h3 id="heading"></h3>
 </form>
 
 <script>
@@ -21,12 +21,19 @@
     let date2 = new Date();
     date2.setDate(date2.getDate() + 1)
     let tomorrow = date2.toLocaleDateString("en-NZ");
-    //document.getElementById("heading").textContent = formatDate(tomorrow);
+    document.getElementById("heading").textContent = formatDate(today);
     document.getElementById("checkInDate").min = formatDate(today);
     document.getElementById("checkOutDate").min = formatDate(tomorrow);
 
     function formatDate(unFormatted) {
         let components = unFormatted.split("/");
+        let day = components[0];
+        console.log(day);
+        if (day.length < 2) {
+            components[0] = "0" + day;
+            console.log(components);
+        }
+        console.log(components);
         return components.reverse().join("-");
     }
 </script>

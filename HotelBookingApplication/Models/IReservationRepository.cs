@@ -2,7 +2,7 @@
 {
     public interface IReservationRepository 
     {
-        IEnumerable<Reservation> AllReservations();
+        IEnumerable<Reservation> AllReservations { get; }
         Reservation GetById(int resId);
         Reservation GetByName(string name);
     }

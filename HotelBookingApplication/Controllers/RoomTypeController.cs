@@ -13,8 +13,8 @@ namespace HotelBookingApplication.Controllers
         }
         public IActionResult List()
         {
-            RoomTypeListViewModel roomTypeListViewModel = new RoomTypeListViewModel(_roomTypeRepository.AllRoomTypes);
-            return View(roomTypeListViewModel);
+            IEnumerable<RoomType> roomTypes = _roomTypeRepository.AllRoomTypes;
+            return View(roomTypes);
         }
 
         public IActionResult Details(int id)

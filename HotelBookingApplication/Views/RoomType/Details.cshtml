@@ -11,6 +11,8 @@
     <div class="col-7">
         <p>@Model.RoomTypeDescription</p>
         <h3>@Model.RoomRate.ToString("c") per night</h3>
-        <button class="my-4">Check Availability</button>
+        <a asp-controller="Reservation" asp-action="Index">
+            <button class="btn btn-primary my-4" >Check Availability</button>
+        </a>
     </div>
 </div>

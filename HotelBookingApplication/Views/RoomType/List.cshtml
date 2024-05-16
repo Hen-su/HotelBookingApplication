@@ -1,8 +1,8 @@
-﻿@model RoomTypeListViewModel
+﻿@model IEnumerable<RoomType>
 
 <h1 class="my-xl-5">Rooms</h1>
 <div class="row">
-@foreach (var roomType in Model.RoomTypes)
+@foreach (var roomType in Model)
 {
     <div class="col-md-4">
         <div class="card roomType-card">
