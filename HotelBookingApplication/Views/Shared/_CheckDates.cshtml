@@ -1,4 +1,4 @@
-﻿<form class="card p-md-4" method="post" asp-controller="Reservation" asp-action="Availability">
+﻿<form class="card p-md-4 mt-5" method="post" asp-controller="Reservation" asp-action="Availability">
     <div class="form-group d-flex row">
         <div class="col">
             <label class="mx-auto" for="checkInDate">Check In:</label>
@@ -12,7 +12,6 @@
         
     </div>
     <button class="mt-4" type="submit">Check Availability</button>
-    <h3 id="heading"></h3>
 </form>
 
 <script>
@@ -21,7 +20,7 @@
     let date2 = new Date();
     date2.setDate(date2.getDate() + 1)
     let tomorrow = date2.toLocaleDateString("en-NZ");
-    document.getElementById("heading").textContent = formatDate(today);
+    //document.getElementById("heading").textContent = formatDate(today);
     document.getElementById("checkInDate").min = formatDate(today);
     document.getElementById("checkOutDate").min = formatDate(tomorrow);
 

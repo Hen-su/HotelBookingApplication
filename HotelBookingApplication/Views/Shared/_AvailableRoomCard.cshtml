@@ -1,30 +1,72 @@
 ﻿@model IEnumerable<RoomType>
 
-<h1 class="my-xl-5">Rooms</h1>
+@{
+    var roomCount = ViewBag.RoomCount as Dictionary<int, int>;
+}
+
+<h1 class="my-xl-5">Available Rooms</h1>
     @foreach (var roomType in Model)
     {
-            <div class="card roomType-card">
+            <div class="card my-4 roomType-card">
                 <div class="row no-gutters">
-                    <div class="col-md-12">
-                        <img src=@roomType.ImageThumbnail class="card-img w-auto" alt=@roomType.RoomTypeName />
+                    <div class="col-md-2">
+                        <img src=@roomType.ImageThumbnail class="card-img w-auto img-fluid h-100" alt=@roomType.RoomTypeName />
                     </div>
-                    <div class="col-md-8">
+                    <div class="col-md-10">
                         <div class="card-body roomType-button">
                             <h4 class="d-grid">
                             </h4>
-                            <div class="d-flex justify-content-between mt-2">
+                            <div class="mt-2">
                                 <h2 class="text-start">
                                     <a class="roomType-link" asp-controller="RoomType" asp-action="Details" asp-route-id="@roomType.RoomTypeId">
                                         @roomType.RoomTypeName
                                     </a>
                                 </h2>
-                                <h5 class="text-nowrap">
-                                    @roomType.RoomRate.ToString("c")
-                                </h5>
+                                <div class="d-flex align-items-center justify-content-between mt-4">
+                                    <h5 class="text-nowrap">
+                                        @roomType.RoomRate.ToString("c")
+                                        Per Night
+                                    </h5>
+                                    <h6 class="text-nowrap">
+                                        Max Occupancy: @roomType.Occupancy
+                                    </h6>
+                                    <h6 class="text-danger">
+                                        Rooms Left: @roomCount[roomType.RoomTypeId]
+                                    </h6>
+                                        <a class="btn btn-primary w-25 text-light" onclick="addToShoppingCart(@roomType.RoomTypeId)">
+                                            Select
+                                        </a>
+                                </div>
                             </div>
                         </div>
                     </div>
                 </div>
             </div>
     }
+
+    {<script>
+         function addToShoppingCart(roomId) {
+             var checkInDate = document.getElementById("checkInDate").value;
+             var checkOutDate = document.getElementById("checkOutDate").value;
+
+             $.ajax({
+                 url: "/ShoppingCart/AddToShoppingCart",
+                 type: "POST",
+                 data: {
+                     id: roomId,
+                     checkInDate: checkInDate,
+                     checkOutDate: checkOutDate
+                 },
+                 success: function (response) {
+                     if (response.success) {
+                         console.log("Item added to shopping cart successfully!");
+                         window.location.href = "/ShoppingCart/Index";
+                     }
+                     else{
+                         console.log("Error: " + response.error)
+                     }
+                 }
+             });
+         }
+    </script>}
 

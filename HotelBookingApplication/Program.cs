@@ -5,8 +5,11 @@ var builder = WebApplication.CreateBuilder(args);
 builder.Services.AddControllersWithViews();
 builder.Services.AddScoped<IRoomRepository, RoomRepository>();
 builder.Services.AddScoped<IRoomTypeRepository, RoomTypeRepository>();
-builder.Services.AddScoped<IRoomStatusRepository, RoomStatusRepository>();
+builder.Services.AddScoped<IReservationStatusRepository, ReservationStatusRepository>();
 builder.Services.AddScoped<IReservationRepository, ReservationRepository>();
+builder.Services.AddScoped<IReservationDetailsRepository, ReservationDetailsRepository>();
+builder.Services.AddScoped<IGuestDetailsRepository, GuestDetailsRepository>();
+builder.Services.AddScoped<IShoppingCart, ShoppingCart>(sp => ShoppingCart.GetCart(sp));
 builder.Services.AddDbContext<HotelBookingApplicationDbContext>(options =>
 {
     options.UseSqlServer(builder.Configuration["ConnectionStrings:HotelBookingApplicationDbContextConnection"]);

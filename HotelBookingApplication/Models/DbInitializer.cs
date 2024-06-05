@@ -33,29 +33,30 @@ namespace HotelBookingApplication.Models
         }
         
 
-        private static Dictionary<string, RoomStatus>? roomStatus;
-        public static Dictionary<string, RoomStatus> RoomStatus
+        private static Dictionary<string, ReservationStatus>? resStatuses;
+        public static Dictionary<string, ReservationStatus> ResStatuses
         {
             get
             {
-                if (roomStatus == null)
+                if (resStatuses == null)
                 {
-                    var statusList = new RoomStatus[]
+                    var statusList = new ReservationStatus[]
                     {
-                                        new RoomStatus { RoomStatusName = "Available" },
-                                        new RoomStatus { RoomStatusName = "Occupied" },
-                                        new RoomStatus { RoomStatusName = "Reserved" },
-                                        new RoomStatus { RoomStatusName = "Maintenance" }
+                                        new ReservationStatus { ReservationStatusName = "Active" },
+                                        new ReservationStatus { ReservationStatusName = "Checked In" },
+                                        new ReservationStatus { ReservationStatusName = "Checked Out" },
+                                        new ReservationStatus { ReservationStatusName = "Closed" },
+                                        new ReservationStatus { ReservationStatusName = "Cancelled" }
                     };
 
-                    roomStatus = new Dictionary<string, RoomStatus>();
+                    resStatuses = new Dictionary<string, ReservationStatus>();
 
-                    foreach (RoomStatus status in statusList)
+                    foreach (ReservationStatus status in statusList)
                     {
-                        roomStatus.Add(status.RoomStatusName, status);
+                        resStatuses.Add(status.ReservationStatusName, status);
                     }
                 }
-                return roomStatus;
+                return resStatuses;
             }
         }
 
@@ -66,11 +67,11 @@ namespace HotelBookingApplication.Models
 
             context.Database.Migrate();
 
-            if (!context.RoomStatuses.Any())
+            if (!context.ReservationStatuses.Any())
             {
-                foreach (RoomStatus roomStatus in RoomStatus.Values)
+                foreach (ReservationStatus status in ResStatuses.Values)
                 {
-                    context.Add(RoomStatus);
+                    context.Add(status);
                 }
                 context.SaveChanges();
             }
@@ -88,16 +89,16 @@ namespace HotelBookingApplication.Models
             {
                 context.Rooms.AddRange
                 (
-                    new Room { RoomNumber = 101, RoomType = RoomTypes["Queen Room"], RoomStatus = RoomStatus["Available"] },
-                    new Room { RoomNumber = 102, RoomType = RoomTypes["Queen Room"], RoomStatus = RoomStatus["Available"] },
-                    new Room { RoomNumber = 103, RoomType = RoomTypes["King Room"], RoomStatus = RoomStatus["Available"] },
-                    new Room { RoomNumber = 104, RoomType = RoomTypes["King Room"], RoomStatus = RoomStatus["Available"] },
-                    new Room { RoomNumber = 105, RoomType = RoomTypes["Double Room"], RoomStatus = RoomStatus["Available"] },
-                    new Room { RoomNumber = 201, RoomType = RoomTypes["Queen Room"], RoomStatus = RoomStatus["Available"] },
-                    new Room { RoomNumber = 202, RoomType = RoomTypes["Queen Room"], RoomStatus = RoomStatus["Available"] },
-                    new Room { RoomNumber = 203, RoomType = RoomTypes["King Room"], RoomStatus = RoomStatus["Available"] },
-                    new Room { RoomNumber = 204, RoomType = RoomTypes["King Room"], RoomStatus = RoomStatus["Available"] },
-                    new Room { RoomNumber = 205, RoomType = RoomTypes["Double Room"], RoomStatus = RoomStatus["Available"] }
+                    new Room { RoomNumber = 101, RoomType = RoomTypes["Queen Room"] },
+                    new Room { RoomNumber = 102, RoomType = RoomTypes["Queen Room"] },
+                    new Room { RoomNumber = 103, RoomType = RoomTypes["King Room"] },
+                    new Room { RoomNumber = 104, RoomType = RoomTypes["King Room"] },
+                    new Room { RoomNumber = 105, RoomType = RoomTypes["Double Room"] },
+                    new Room { RoomNumber = 201, RoomType = RoomTypes["Queen Room"] },
+                    new Room { RoomNumber = 202, RoomType = RoomTypes["Queen Room"] },
+                    new Room { RoomNumber = 203, RoomType = RoomTypes["King Room"] },
+                    new Room { RoomNumber = 204, RoomType = RoomTypes["King Room"] },
+                    new Room { RoomNumber = 205, RoomType = RoomTypes["Double Room"] }
                 );
                 context.SaveChanges();
             }

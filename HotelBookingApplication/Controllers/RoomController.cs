@@ -7,9 +7,9 @@ namespace HotelBookingApplication.Controllers
     {
         private readonly IRoomRepository _roomRepository; 
         private readonly IRoomTypeRepository _roomTypeRepository;
-        private readonly IRoomStatusRepository _roomStatusRepository;
+        private readonly IReservationStatusRepository _roomStatusRepository;
 
-        public RoomController(IRoomRepository roomRepository, IRoomTypeRepository roomTypeRepository, IRoomStatusRepository roomStatusRepository)
+        public RoomController(IRoomRepository roomRepository, IRoomTypeRepository roomTypeRepository, IReservationStatusRepository roomStatusRepository)
         {
             _roomRepository = roomRepository;
             _roomTypeRepository = roomTypeRepository;
