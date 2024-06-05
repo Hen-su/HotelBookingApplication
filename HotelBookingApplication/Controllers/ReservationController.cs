@@ -1,8 +1,10 @@
 ﻿using HotelBookingApplication.Models;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 namespace HotelBookingApplication.Controllers
 {
+    [Authorize]
     public class ReservationController : Controller
     {
         private readonly IRoomRepository _roomRepository;
@@ -23,11 +25,13 @@ namespace HotelBookingApplication.Controllers
             _reservationRepository = reservationRepository;
         }
 
+        [AllowAnonymous]
         public IActionResult Index()
         {
             return View();
         }
 
+        [AllowAnonymous]
         [HttpPost]
         public IActionResult Availability(DateOnly? checkInDate, DateOnly? checkOutDate)
         {

@@ -1,4 +1,4 @@
-﻿<form class="card p-md-4 mt-5" method="post" asp-controller="Reservation" asp-action="Availability">
+﻿<form id="dateForm" class="card p-md-4 mt-5" method="post" asp-controller="Reservation" asp-action="Availability">
     <div class="form-group d-flex row">
         <div class="col">
             <label class="mx-auto" for="checkInDate">Check In:</label>
@@ -11,19 +11,21 @@
         </div>
         
     </div>
-    <button class="mt-4" type="submit">Check Availability</button>
+    <button class="mx-auto mt-4 w-50" onclick="validateAndSubmit()">Check Availability</button>
 </form>
 
 <script>
-    let date = new Date();
-    let today = date.toLocaleDateString("en-NZ");
-    let date2 = new Date();
-    date2.setDate(date2.getDate() + 1)
-    let tomorrow = date2.toLocaleDateString("en-NZ");
-    //document.getElementById("heading").textContent = formatDate(today);
-    document.getElementById("checkInDate").min = formatDate(today);
-    document.getElementById("checkOutDate").min = formatDate(tomorrow);
-
+    document.addEventListener("DOMContentLoaded", function () {
+        let date = new Date();
+        let today = date.toLocaleDateString("en-NZ");
+        let date2 = new Date();
+        date2.setDate(date2.getDate() + 1)
+        let tomorrow = date2.toLocaleDateString("en-NZ");
+        //document.getElementById("heading").textContent = formatDate(today);
+        document.getElementById("checkInDate").min = formatDate(today);
+        document.getElementById("checkOutDate").min = formatDate(tomorrow);
+    })
+    
     function formatDate(unFormatted) {
         let components = unFormatted.split("/");
         let day = components[0];
@@ -34,5 +36,16 @@
         }
         console.log(components);
         return components.reverse().join("-");
+    }
+
+    function validateAndSubmit() {
+        var checkInDate = document.getElementById("checkInDate").value;
+        var checkOutDate = document.getElementById("checkOutDate").value;
+
+        if (checkInDate >= checkOutDate) {
+            alert("Check-out date must be greater than check-in date.");
+        } else {
+            document.getElementById("dateForm").submit(); // Submit the form
+        }
     }
 </script>

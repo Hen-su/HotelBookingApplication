@@ -6,7 +6,7 @@
     <title>Hotel Booking</title>
     <link href="https://fonts.googleapis.com/css?family=Work+Sans" rel="stylesheet" type="text/css" />
     <link href="~/css/site.css" rel="stylesheet" />
-    <script src="~/lib/bootstrap/js/bootstrap.js"></script>
+    <script src="~/lib/bootstrap/js/bootstrap.bundle.js"></script>
     <script src="~/lib/jquery/jquery.js"></script>
     <script src="~/lib/jquery-validate//jquery.validate.js"></script>
     <script src="~/lib/jquery-validation-unobtrusive/jquery.validate.unobtrusive.js"></script>
@@ -39,11 +39,14 @@
                                 <a asp-controller="Contact" asp-action="Index" class="nav-link">Contact Us</a>
                             </li>
                         </ul>
+                        <vc:shopping-cart-summary />
+                        <partial name="_LoginPartial" />
                     </div>
                 </div>
             </nav>
         </header>
         @RenderBody()
+        @RenderSection("Scripts", required: false)
     </div>
 </body>
 </html>

@@ -1,7 +1,9 @@
 using HotelBookingApplication.Models;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.AspNetCore.Identity;
 
 var builder = WebApplication.CreateBuilder(args);
+var connectionString = builder.Configuration.GetConnectionString("HotelBookingApplicationDbContextConnection") ?? throw new InvalidOperationException("Connection string 'HotelBookingApplicationDbContextConnection' not found.");
 builder.Services.AddControllersWithViews();
 builder.Services.AddScoped<IRoomRepository, RoomRepository>();
 builder.Services.AddScoped<IRoomTypeRepository, RoomTypeRepository>();
@@ -14,6 +16,8 @@ builder.Services.AddDbContext<HotelBookingApplicationDbContext>(options =>
 {
     options.UseSqlServer(builder.Configuration["ConnectionStrings:HotelBookingApplicationDbContextConnection"]);
 });
+
+builder.Services.AddDefaultIdentity<IdentityUser>(/*options => options.SignIn.RequireConfirmedAccount = true*/).AddEntityFrameworkStores<HotelBookingApplicationDbContext>();
 builder.Services.AddSession();
 builder.Services.AddHttpContextAccessor();
 var app = builder.Build();
@@ -26,5 +30,8 @@ if (app.Environment.IsDevelopment())
 app.UseStaticFiles();
 app.MapControllerRoute(name: "default", pattern: "{controller=Home}/{action=Index}/{id:int?}");
 app.UseSession();
+app.UseAuthentication();
+app.UseAuthorization();
+app.MapRazorPages();
 DbInitializer.Seed(app);
 app.Run();
