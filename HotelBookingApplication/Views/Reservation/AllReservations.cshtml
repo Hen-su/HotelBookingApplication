@@ -1,28 +1,31 @@
 ﻿@model IEnumerable<Reservation>
 
-<table class="table">
+<table class="table mt-4">
     <thead>
         <tr>
-            <th>
-                Reservation Id
+            <th class="col-1">
+                Id
             </th>
-            <th>
+            <th class="col-2">
                 Creation Time
             </th>
-            <th>
+            <th class="col-2">
+                Email
+            </th>
+            <th class="col-1">
                 No. of Guests
             </th>
-            <th>
+            <th class="col-2">
                 Guest Details
             </th>
-            <th>
+            <th class="col-2">
                 Reservation Details
             </th>
-            <th>
+            <th class="col-1">
                 Payment Status
             </th>
-            <th>
-                Reservation Status
+            <th class="col-1">
+                Status
             </th>
             <th></th>
         </tr>
@@ -38,26 +41,50 @@
                     @Html.DisplayFor(modelItem => item.CreationTime)
                 </td>
                 <td>
+                    @Html.DisplayFor(modelItem => item.Email)
+                </td>
+                <td>
                     @Html.DisplayFor(modelItem => item.NumberOfGuests)
                 </td>
                 <td>
-                    @Html.DisplayFor(modelItem => item.GuestDetails)
+                    <button class="btn btn-link gdModalBtn" data-reservation-id="@item.ReservationId">View Guest Details</button>
                 </td>
                 <td>
-                    @Html.DisplayFor(modelItem => item.ReservationDetails)
+                    <button class="btn btn-link rdModalBtn" data-reservation-id="@item.ReservationId">View Reservation Details</button>
                 </td>
                 <td>
                     @Html.DisplayFor(modelItem => item.IsPaid)
                 </td>
                 <td>
-                    @Html.DisplayFor(modelItem => item.ReservationStatusId)
+                    @Html.DisplayFor(modelItem => item.RSidNavigation.ReservationStatusName)
                 </td>
                 <td>
-                    <a asp-action="Edit" asp-route-id="@item.ReservationId">Edit</a> |
-                    <a asp-action="Details" asp-route-id="@item.ReservationId">Details</a> |
+                    <a asp-action="Edit" asp-route-id="@item.ReservationId">Edit</a>
+                    <a asp-action="Details" asp-route-id="@item.ReservationId">Details</a>
                     <a asp-action="Delete" asp-route-id="@item.ReservationId">Delete</a>
                 </td>
             </tr>
         }
     </tbody>
 </table>
+
+<div id="modalContainer" class="modal shadow" role="dialog"></div>
+
+
+<script>
+    $(document).ready(function () {
+        $(".rdModalBtn").click(function () {
+            var reservationId = $(this).data("reservation-id");
+            $("#modalContainer").load("/Reservation/ReservationDetailsPartial?id=" + reservationId, function () {
+                $("#modalContainer").modal("show");
+            });
+        });
+
+        $(".gdModalBtn").click(function () {
+            var reservationId = $(this).data("reservation-id");
+            $("#modalContainer").load("/Reservation/GuestDetailsPartial?id=" + reservationId, function () {
+                $("#modalContainer").modal("show");
+            });
+        });
+    });
+</script>

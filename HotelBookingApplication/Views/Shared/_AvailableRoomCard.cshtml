@@ -5,7 +5,9 @@
 }
 
 <h1 class="my-xl-5">Available Rooms</h1>
-    @foreach (var roomType in Model)
+@if (Model.Any())
+{
+   @foreach (var roomType in Model)
     {
             <div class="card my-4 roomType-card">
                 <div class="row no-gutters">
@@ -43,6 +45,13 @@
                 </div>
             </div>
     }
+}
+else
+{
+    <h1>Sorry, there are no rooms available for your chosen time</h1>
+}
+
+
 
     {<script>
          function addToShoppingCart(roomId) {

@@ -34,12 +34,17 @@
                                         <h4>@line.StayDuration Night</h4>
                                     </div>
                                 </div>
-                             </div>
+
+                            </div>
+                            <div class="col-4">
+                                <a asp-controller="ShoppingCart" asp-action="RemoveFromShoppingCart" asp-route-id="@line.ShoppingCartItemId">Remove</a>
+                            </div>
                         </div>
                     </div>
                 </div>
             </div>
         }
+        <a asp-controller="ShoppingCart" asp-action="ClearCart" class="btn btn-secondary">Clear</a>
     </div>
     <div class="col-4">
         <div class="card shopping-cart-card p-3">

@@ -1,6 +1,7 @@
 ﻿using HotelBookingApplication.Models;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Mvc.Rendering;
 
 namespace HotelBookingApplication.Controllers
 {
@@ -13,9 +14,10 @@ namespace HotelBookingApplication.Controllers
         private readonly IShoppingCart _shoppingcart;
         private readonly IGuestDetailsRepository _guestDetailsRepository;
         private readonly IReservationRepository _reservationRepository;
+        private readonly IReservationStatusRepository _reservationStatusRepository;
 
         public ReservationController(IReservationDetailsRepository reservationDetailsRepository, IRoomTypeRepository roomTypeRepository, 
-            IRoomRepository roomRepository, IShoppingCart shoppingcart, IGuestDetailsRepository guestDetailsRepository, IReservationRepository reservationRepository)
+            IRoomRepository roomRepository, IShoppingCart shoppingcart, IGuestDetailsRepository guestDetailsRepository, IReservationRepository reservationRepository, IReservationStatusRepository reservationStatusRepository)
         {
             _reservationDetailsRepository = reservationDetailsRepository;
             _roomTypeRepository = roomTypeRepository;
@@ -23,6 +25,7 @@ namespace HotelBookingApplication.Controllers
             _shoppingcart = shoppingcart;
             _guestDetailsRepository = guestDetailsRepository;
             _reservationRepository = reservationRepository;
+            _reservationStatusRepository = reservationStatusRepository;
         }
 
         [AllowAnonymous]
@@ -70,7 +73,11 @@ namespace HotelBookingApplication.Controllers
                 {
                     if (checkInDate >= details.CheckInDate && checkInDate < details.CheckOutDate)
                     {
-                        removeRooms.Add(roomList.FirstOrDefault(rm => rm.RoomId == details.RoomId));
+                        if(checkOutDate > details.CheckInDate && checkOutDate <= details.CheckOutDate)
+                        {
+                            removeRooms.Add(roomList.FirstOrDefault(rm => rm.RoomId == details.RoomId));
+                        }
+                        
                     }
                 }
                 foreach (Room room in removeRooms)
@@ -115,7 +122,8 @@ namespace HotelBookingApplication.Controllers
                 _guestDetailsRepository.AddGuest(guest);
                 Reservation reservation = new Reservation
                 {
-                    GuestDetails = guest
+                    Email = HttpContext.User.Identity.Name,
+                    GuestDetailsId = guest.GuestDetailsId
                 };
                 _reservationRepository.MakeReservation(reservation);
                 _shoppingcart.ClearCart();
@@ -138,6 +146,20 @@ namespace HotelBookingApplication.Controllers
         }
 
         [Authorize(Roles = "Admin")]
+        public IActionResult ReservationDetailsPartial(int id)
+        {
+            var reservationDetails = _reservationDetailsRepository.AllDetails.Where(rd => rd.ReservationId == id);
+            return PartialView("_ReservationDetails", reservationDetails);
+        }
+
+        [Authorize(Roles = "Admin")]
+        public IActionResult GuestDetailsPartial(int id)
+        {
+            var guestDetails = _guestDetailsRepository.AllGuests.FirstOrDefault(g => g.GuestDetailsId == id);
+            return PartialView("_GuestDetails", guestDetails);
+        }
+
+        [Authorize(Roles = "Admin")]
         public IActionResult Details(int id) 
         {
             if (id != null)
@@ -154,9 +176,63 @@ namespace HotelBookingApplication.Controllers
             if (id != null)
             {
                 var reservation = _reservationRepository.GetById(id);
+                ViewBag.ResStatus = new SelectList(_reservationStatusRepository.AllReservationStatus, "ReservationStatusId", "ReservationStatusName", reservation.RSidNavigation);
                 return View(reservation);
             }
             return NotFound("Reservation not found");
         }
+
+        [Authorize(Roles = "Admin")]
+        [ValidateAntiForgeryTokenAttribute]
+        [HttpPost]
+        public IActionResult Edit(int id, [Bind("ReservationId,CreationTime,Email,NumberOfGuests,GuestDetailsId,IsPaid,ReservationStatusId")] Reservation reservation)
+        {
+            if (ModelState.IsValid)
+            {
+                _reservationRepository.UpdateReservation(reservation);
+                return RedirectToAction("AllReservations");
+            }
+            ViewBag.ResStatus = new SelectList(_reservationStatusRepository.AllReservationStatus, "ReservationStatusId", "ReservationStatusName", reservation.RSidNavigation);
+            return View(reservation);
+        }
+
+        [Authorize(Roles = "Admin")]
+        public IActionResult Delete(int id)
+        {
+            if (id != null)
+            {
+                var reservation = _reservationRepository.GetById(id);
+                return View(reservation);
+            }
+            return NotFound("Reservation not found");
+        }
+
+        [Authorize(Roles = "Admin")]
+        public IActionResult DeleteConfirmed(int id)
+        {
+            if (id != null)
+            {
+                var reservation = _reservationRepository.GetById(id);
+                var details = _reservationDetailsRepository.AllDetails.Where(d => d.ReservationId == id);
+                if (details.Any())
+                {
+                    foreach(var item in details)
+                    {
+                        _reservationDetailsRepository.Delete(item);
+                    }
+                }
+                _reservationRepository.DeleteReservation(reservation);
+                return RedirectToAction("AllReservations");
+            }
+            return RedirectToAction("Delete", id);
+        }
+        
+        [Authorize(Roles = "Admin")]
+        public IActionResult Search()
+        {
+            return View();
+        }
     }
+
+    
 }

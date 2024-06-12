@@ -21,11 +21,28 @@
             @Html.DisplayFor(model => model.NumberOfGuests)
         </dd>
         <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.GuestDetails)
+            @Html.DisplayNameFor(model => model.GuestDetailsId)
         </dt>
+
         <dd class="col-sm-10">
-            @Html.DisplayFor(model => model.GidNavigation.FirstName + model.GidNavigation.LastName)
+            <button class="btn btn-link gdModalBtn" data-reservation-id="@Model.ReservationId">
+                @Html.DisplayFor(model => model.GuestDetailsId)
+            </button>
         </dd>
+        @foreach (var detail in Model.RDidNavigation)
+        {
+            <dt class="col-sm-2">
+                @Html.DisplayNameFor(model => detail.ReservationDetailsId)
+            </dt>
+
+            <dd class="col-sm-10">
+                <button class="btn btn-link rdModalBtn" data-reservation-id="@Model.ReservationId">
+                    @Html.DisplayFor(model => detail.ReservationDetailsId)
+                </button>
+            </dd>
+            
+            
+        }
         <dt class = "col-sm-2">
             @Html.DisplayNameFor(model => model.IsPaid)
         </dt>
@@ -33,13 +50,7 @@
             @Html.DisplayFor(model => model.IsPaid)
         </dd>
         <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.ReservationDetails)
-        </dt>
-        <dd class="col-sm-10">
-            @Html.DisplayFor(model => model.RDidNavigation.ReservationDetailsId)
-        </dd>
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.ReservationStatus)
+            Reservation Status
         </dt>
         <dd class="col-sm-10">
             @Html.DisplayFor(model => model.RSidNavigation.ReservationStatusName)
@@ -50,3 +61,22 @@
     <a asp-action="Edit" asp-route-id="@Model.ReservationId">Edit</a> |
     <a asp-action="AllReservations">Back to List</a>
 </div>
+<div id="modalContainer" class="modal shadow" role="dialog"></div>
+
+<script>
+    $(document).ready(function () {
+        $(".rdModalBtn").click(function () {
+            var reservationId = $(this).data("reservation-id");
+            $("#modalContainer").load("/Reservation/ReservationDetailsPartial?id=" + reservationId, function () {
+                $("#modalContainer").modal("show");
+            });
+        });
+
+        $(".gdModalBtn").click(function () {
+            var reservationId = $(this).data("reservation-id");
+            $("#modalContainer").load("/Reservation/GuestDetailsPartial?id=" + reservationId, function () {
+                $("#modalContainer").modal("show");
+            });
+        });
+    });
+</script>

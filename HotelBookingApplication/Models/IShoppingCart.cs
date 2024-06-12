@@ -3,7 +3,7 @@
     public interface IShoppingCart
     {
         void AddToCart(RoomType roomType, DateOnly checkInDate, DateOnly checkOutDate);
-        int RemoveFromCart(RoomType roomType);
+        int RemoveFromCart(ShoppingCartItem item);
         void ClearCart();
         decimal GetShoppingCartTotal();
         List<ShoppingCartItem> GetShoppingCartItems();

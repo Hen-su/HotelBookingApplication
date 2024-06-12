@@ -66,10 +66,10 @@ namespace HotelBookingApplication.Models
             return total;
         }
 
-        public int RemoveFromCart(RoomType roomType)
+        public int RemoveFromCart(ShoppingCartItem item)
         {
             var shoppingCartItem = _hotelBookingApplicationDbContext.ShoppingCartItems.SingleOrDefault(
-                s => s.RoomType.RoomTypeId == roomType.RoomTypeId && s.ShoppingCartId == ShoppingCartId);
+                s => s.ShoppingCartItemId == item.ShoppingCartItemId && s.ShoppingCartId == ShoppingCartId);
 
             var localAmount = 0;
             if (shoppingCartItem != null)

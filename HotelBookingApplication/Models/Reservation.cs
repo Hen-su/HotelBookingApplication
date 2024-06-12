@@ -1,18 +1,19 @@
-﻿namespace HotelBookingApplication.Models
+﻿using System.ComponentModel.DataAnnotations.Schema;
+
+namespace HotelBookingApplication.Models
 {
     public class Reservation
     {
         public int ReservationId { get; set; }
         public DateTime CreationTime { get; set; }
-        public GuestDetails GuestDetails { get; set; } = default;
+        public string Email { get; set; }
         public int NumberOfGuests { get; set; }
-        public List<ReservationDetails>? ReservationDetails { get; set; }
+        public int GuestDetailsId { get; set; }
         public bool IsPaid { get; set; }
         public int ReservationStatusId { get; set; }
-        public ReservationStatus ReservationStatus { get; set; } = default;
-        public virtual ReservationDetails RDidNavigation { get; set; } = null!;
-        public virtual ReservationStatus RSidNavigation { get; set; } = null!;
+        public virtual ICollection<ReservationDetails>? RDidNavigation { get; set; } = new List<ReservationDetails>();
+        public virtual ReservationStatus? RSidNavigation { get; set; } = null!;
 
-        public virtual GuestDetails GidNavigation { get; set; } = null!;
+        public virtual GuestDetails? GidNavigation { get; set; } = null!;
     }
 }

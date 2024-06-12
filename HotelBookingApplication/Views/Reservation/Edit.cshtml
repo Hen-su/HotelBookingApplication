@@ -1,0 +1,59 @@
+﻿@model Reservation
+
+@{
+    ViewData["Title"] = "Edit";
+}
+<br>
+<h1>Edit</h1>
+<br>
+<h4>Product</h4>
+<hr />
+<div class="row">
+    <div class="col-md-4">
+        <form asp-action="Edit">
+            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+            <input type="hidden" asp-for="ReservationId" />
+            <div class="form-group">                
+                <label asp-for="CreationTime" class="control-label"></label><br><br>
+                <input type="datetime-local" asp-for="CreationTime" value="@Model.CreationTime.ToString("yyyy-MM-ddTHH:mm")" class="form-control" readonly />
+                <span asp-validation-for="CreationTime" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <br>
+                <label asp-for="Email" class="control-label"></label><br><br>
+                <input asp-for="Email" class="form-control" />
+                <span asp-validation-for="Email" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <br>
+                <label asp-for="NumberOfGuests" class="control-label"></label><br><br>
+                <input asp-for="NumberOfGuests" class="form-control" />
+                <span asp-validation-for="NumberOfGuests" class="text-danger"></span>
+            </div>
+            <div>
+                <input asp-for="GuestDetailsId" hidden />
+            </div>
+            <div class="form-group">
+                <br>
+                <label asp-for="IsPaid" class="control-label"></label><br><br>
+                <input class="form-check-input" asp-for="IsPaid" class="form-control" />
+                <span asp-validation-for="IsPaid" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <br>
+                <label asp-for=ReservationStatusId class="control-label">Reservation Status</label><br><br>
+                <select asp-for="ReservationStatusId" class="form-control" asp-items="ViewBag.ResStatus"></select>
+                <span asp-validation-for="ReservationStatusId" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <br>
+                <input type="submit" value="Save" class="btn btn-primary" name="save"/>
+            </div>
+        </form>
+    </div>
+</div>
+
+<div>
+    <br>
+    <a asp-action="Index">Back to List</a>
+</div>

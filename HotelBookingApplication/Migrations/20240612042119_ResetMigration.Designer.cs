@@ -12,8 +12,8 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace HotelBookingApplication.Migrations
 {
     [DbContext(typeof(HotelBookingApplicationDbContext))]
-    [Migration("20240605125610_IdentityAdded")]
-    partial class IdentityAdded
+    [Migration("20240612042119_ResetMigration")]
+    partial class ResetMigration
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -96,6 +96,10 @@ namespace HotelBookingApplication.Migrations
 
                     b.Property<DateTime>("CreationTime")
                         .HasColumnType("datetime2");
+
+                    b.Property<string>("Email")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
 
                     b.Property<int>("GuestDetailsId")
                         .HasColumnType("int");
@@ -397,10 +401,12 @@ namespace HotelBookingApplication.Migrations
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityUserLogin<string>", b =>
                 {
                     b.Property<string>("LoginProvider")
-                        .HasColumnType("nvarchar(450)");
+                        .HasMaxLength(128)
+                        .HasColumnType("nvarchar(128)");
 
                     b.Property<string>("ProviderKey")
-                        .HasColumnType("nvarchar(450)");
+                        .HasMaxLength(128)
+                        .HasColumnType("nvarchar(128)");
 
                     b.Property<string>("ProviderDisplayName")
                         .HasColumnType("nvarchar(max)");
@@ -437,10 +443,12 @@ namespace HotelBookingApplication.Migrations
                         .HasColumnType("nvarchar(450)");
 
                     b.Property<string>("LoginProvider")
-                        .HasColumnType("nvarchar(450)");
+                        .HasMaxLength(128)
+                        .HasColumnType("nvarchar(128)");
 
                     b.Property<string>("Name")
-                        .HasColumnType("nvarchar(450)");
+                        .HasMaxLength(128)
+                        .HasColumnType("nvarchar(128)");
 
                     b.Property<string>("Value")
                         .HasColumnType("nvarchar(max)");
@@ -452,40 +460,40 @@ namespace HotelBookingApplication.Migrations
 
             modelBuilder.Entity("HotelBookingApplication.Models.Reservation", b =>
                 {
-                    b.HasOne("HotelBookingApplication.Models.GuestDetails", "GuestDetails")
+                    b.HasOne("HotelBookingApplication.Models.GuestDetails", "GidNavigation")
                         .WithMany()
                         .HasForeignKey("GuestDetailsId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.HasOne("HotelBookingApplication.Models.ReservationStatus", "ReservationStatus")
+                    b.HasOne("HotelBookingApplication.Models.ReservationStatus", "RSidNavigation")
                         .WithMany()
                         .HasForeignKey("ReservationStatusId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.Navigation("GuestDetails");
+                    b.Navigation("GidNavigation");
 
-                    b.Navigation("ReservationStatus");
+                    b.Navigation("RSidNavigation");
                 });
 
             modelBuilder.Entity("HotelBookingApplication.Models.ReservationDetails", b =>
                 {
-                    b.HasOne("HotelBookingApplication.Models.Reservation", "Reservation")
-                        .WithMany("ReservationDetails")
+                    b.HasOne("HotelBookingApplication.Models.Reservation", "RidNavigation")
+                        .WithMany("RDidNavigation")
                         .HasForeignKey("ReservationId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.HasOne("HotelBookingApplication.Models.Room", "Room")
+                    b.HasOne("HotelBookingApplication.Models.Room", "RMidNavigation")
                         .WithMany()
                         .HasForeignKey("RoomId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.Navigation("Reservation");
+                    b.Navigation("RMidNavigation");
 
-                    b.Navigation("Room");
+                    b.Navigation("RidNavigation");
                 });
 
             modelBuilder.Entity("HotelBookingApplication.Models.Room", b =>
@@ -563,7 +571,7 @@ namespace HotelBookingApplication.Migrations
 
             modelBuilder.Entity("HotelBookingApplication.Models.Reservation", b =>
                 {
-                    b.Navigation("ReservationDetails");
+                    b.Navigation("RDidNavigation");
                 });
 
             modelBuilder.Entity("HotelBookingApplication.Models.RoomType", b =>

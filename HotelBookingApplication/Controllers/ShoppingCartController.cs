@@ -46,12 +46,22 @@ namespace HotelBookingApplication.Controllers
             }
         }
 
-        public RedirectToActionResult RemoveFromShoppingCart(int roomTypeId)
+        public RedirectToActionResult RemoveFromShoppingCart(int id)
         {
-            var selectedRoom = _roomTypeRepository.AllRoomTypes.FirstOrDefault(r => r.RoomTypeId == roomTypeId);
-            if (selectedRoom != null)
+            var item = _shoppingCart.GetShoppingCartItems().FirstOrDefault(i => i.ShoppingCartItemId == id);
+            if (item != null)
             {
-                _shoppingCart.RemoveFromCart(selectedRoom);
+                _shoppingCart.RemoveFromCart(item);
+            }
+            return RedirectToAction("Index");
+        }
+
+        public RedirectToActionResult ClearCart()
+        {
+            var item = _shoppingCart.GetShoppingCartItems().Count;
+            if (item != null)
+            {
+                _shoppingCart.ClearCart();
             }
             return RedirectToAction("Index");
         }
