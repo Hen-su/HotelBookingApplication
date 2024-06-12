@@ -1,4 +1,5 @@
 ﻿using HotelBookingApplication.Models;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.IdentityModel.Tokens;
 
@@ -60,7 +61,7 @@ namespace HotelBookingApplication.Models
             }
         }
 
-        public static void Seed(IApplicationBuilder applicationBuilder)
+        public async static void Seed(IApplicationBuilder applicationBuilder)
         {
             HotelBookingApplicationDbContext context =
                 applicationBuilder.ApplicationServices.CreateScope().ServiceProvider.GetService<HotelBookingApplicationDbContext>();
@@ -102,7 +103,32 @@ namespace HotelBookingApplication.Models
                 );
                 context.SaveChanges();
             }
-                
+            
+            using (var scope = applicationBuilder.ApplicationServices.CreateScope())
+            {
+                var roleManager = scope.ServiceProvider.GetRequiredService<RoleManager<IdentityRole>>();
+                var roles = new[] { "Admin", "Member" };
+                foreach (var role in roles)
+                {
+                    if (!await roleManager.RoleExistsAsync(role))
+                    {
+                        await roleManager.CreateAsync(new IdentityRole(role));
+                    }
+                }
+            }
+
+            using (var scope = applicationBuilder.ApplicationServices.CreateScope())
+            {
+                string email = "test@admin.com";
+                string password = "Password123?";
+                var userManager = scope.ServiceProvider.GetRequiredService<UserManager<IdentityUser>>();
+                if (await userManager.FindByEmailAsync(email) == null)
+                {
+                    var user = new IdentityUser(){ UserName = email, Email = email};
+                    await userManager.CreateAsync(user, password);
+                    await userManager.AddToRoleAsync(user, "Admin");
+                }
+            }
         }
     }
 }  

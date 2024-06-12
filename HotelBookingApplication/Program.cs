@@ -17,7 +17,10 @@ builder.Services.AddDbContext<HotelBookingApplicationDbContext>(options =>
     options.UseSqlServer(builder.Configuration["ConnectionStrings:HotelBookingApplicationDbContextConnection"]);
 });
 
-builder.Services.AddDefaultIdentity<IdentityUser>(/*options => options.SignIn.RequireConfirmedAccount = true*/).AddEntityFrameworkStores<HotelBookingApplicationDbContext>();
+builder.Services.AddDefaultIdentity<IdentityUser>(/*options => options.SignIn.RequireConfirmedAccount = true*/)
+        .AddRoles<IdentityRole>()
+        .AddEntityFrameworkStores<HotelBookingApplicationDbContext>();
+        
 builder.Services.AddSession();
 builder.Services.AddHttpContextAccessor();
 var app = builder.Build();

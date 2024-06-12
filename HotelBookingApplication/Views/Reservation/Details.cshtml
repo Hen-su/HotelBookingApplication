@@ -1,0 +1,52 @@
+﻿@model Reservation
+
+
+<br>
+<h1>Details</h1>
+<br>
+<div>
+    <h4>Reservation</h4>
+    <hr />
+    <dl class="row">
+        <dt class = "col-sm-2">
+            @Html.DisplayNameFor(model => model.ReservationId)
+        </dt>
+        <dd class = "col-sm-10">
+            @Html.DisplayFor(model => model.ReservationId)
+        </dd>
+        <dt class = "col-sm-2">
+            @Html.DisplayNameFor(model => model.NumberOfGuests)
+        </dt>
+        <dd class="col-sm-10">
+            @Html.DisplayFor(model => model.NumberOfGuests)
+        </dd>
+        <dt class = "col-sm-2">
+            @Html.DisplayNameFor(model => model.GuestDetails)
+        </dt>
+        <dd class="col-sm-10">
+            @Html.DisplayFor(model => model.GidNavigation.FirstName + model.GidNavigation.LastName)
+        </dd>
+        <dt class = "col-sm-2">
+            @Html.DisplayNameFor(model => model.IsPaid)
+        </dt>
+        <dd class="col-sm-10">
+            @Html.DisplayFor(model => model.IsPaid)
+        </dd>
+        <dt class = "col-sm-2">
+            @Html.DisplayNameFor(model => model.ReservationDetails)
+        </dt>
+        <dd class="col-sm-10">
+            @Html.DisplayFor(model => model.RDidNavigation.ReservationDetailsId)
+        </dd>
+        <dt class = "col-sm-2">
+            @Html.DisplayNameFor(model => model.ReservationStatus)
+        </dt>
+        <dd class="col-sm-10">
+            @Html.DisplayFor(model => model.RSidNavigation.ReservationStatusName)
+        </dd>
+    </dl>
+</div>
+<div>
+    <a asp-action="Edit" asp-route-id="@Model.ReservationId">Edit</a> |
+    <a asp-action="AllReservations">Back to List</a>
+</div>

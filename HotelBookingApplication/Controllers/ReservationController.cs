@@ -129,5 +129,34 @@ namespace HotelBookingApplication.Controllers
             ViewBag.CheckoutCompleteMessage = "Your booking has been confirmed";
             return View();
         }
+
+        [Authorize(Roles = "Admin")]
+        public IActionResult AllReservations()
+        {
+            var reservations = _reservationRepository.AllReservations.ToList();
+            return View(reservations);
+        }
+
+        [Authorize(Roles = "Admin")]
+        public IActionResult Details(int id) 
+        {
+            if (id != null)
+            {
+                var reservation = _reservationRepository.GetById(id);
+                return View(reservation);
+            }
+            return NotFound("Reservation not found");
+        }
+
+        [Authorize(Roles = "Admin")]
+        public IActionResult Edit(int id)
+        {
+            if (id != null)
+            {
+                var reservation = _reservationRepository.GetById(id);
+                return View(reservation);
+            }
+            return NotFound("Reservation not found");
+        }
     }
 }

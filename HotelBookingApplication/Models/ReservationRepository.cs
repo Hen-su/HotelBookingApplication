@@ -1,4 +1,5 @@
 ﻿
+using Microsoft.AspNetCore.Authorization;
 using System.Diagnostics;
 
 namespace HotelBookingApplication.Models
@@ -19,7 +20,7 @@ namespace HotelBookingApplication.Models
             _reservationDetailsRepository = reservationDetailsRepository;
             _reservationStatusRepository = reservationStatusRepository;
         }
-
+        
         public IEnumerable<Reservation> AllReservations
         {
             get
@@ -30,7 +31,7 @@ namespace HotelBookingApplication.Models
 
         public Reservation GetById(int resId)
         {
-            throw new NotImplementedException();
+            return _hotelBookingApplicationDbContext.Reservations.FirstOrDefault(r => r.ReservationId == resId);
         }
 
         public Reservation GetByName(string name)

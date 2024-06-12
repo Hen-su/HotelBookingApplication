@@ -10,5 +10,9 @@
         public bool IsPaid { get; set; }
         public int ReservationStatusId { get; set; }
         public ReservationStatus ReservationStatus { get; set; } = default;
+        public virtual ReservationDetails RDidNavigation { get; set; } = null!;
+        public virtual ReservationStatus RSidNavigation { get; set; } = null!;
+
+        public virtual GuestDetails GidNavigation { get; set; } = null!;
     }
 }

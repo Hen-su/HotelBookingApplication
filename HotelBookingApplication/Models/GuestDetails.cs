@@ -5,6 +5,7 @@ namespace HotelBookingApplication.Models
     public class GuestDetails
     {
         public int GuestDetailsId { get; set; }
+        public int ReservationId { get; set; }
         [Required(ErrorMessage = "Please enter your first name")]
         [Display(Name = "First name")]
         [StringLength(50)]
@@ -45,5 +46,6 @@ namespace HotelBookingApplication.Models
         [Display(Name = "Country")]
         [StringLength(50)]
         public string Country { get; set; }
+        
     }
 }
